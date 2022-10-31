@@ -1,2 +1,7 @@
 /venv
 /venv1
+/build
+/dist
+/upx-3.96-win64
+app.spec
+main.spec

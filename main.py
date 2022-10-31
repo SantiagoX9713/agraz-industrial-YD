@@ -67,7 +67,9 @@ root.configure(bg='black')
 root.state("zoomed")
 # root.attributes('-fullscreen', True)
 root.wm_title("YoDiagnostico")
-root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='icon.png'))
+
+
+
 
 fig = plt.Figure(figsize=(5,4), dpi=100)
 fig.patch.set_facecolor('black')
@@ -94,7 +96,6 @@ ax.spines['left'].set_color('white')
 canvas = FigureCanvasTkAgg(fig, master=root)  # A tk.DrawingArea.
 canvas.draw()
 
-# pack_toolbar=False will make it easier to use a layout manager later on.
 toolbar = NavigationToolbar2Tk(canvas, root, pack_toolbar=False)
 toolbar.update()
 
@@ -105,27 +106,7 @@ canvas.mpl_connect("key_press_event", key_press_handler)
 button_quit = tk.Button(master=root, text="Quit", command=root.destroy)
 
 
-# def update_frequency(new_val):
-#     # retrieve frequency
-#     f = float(new_val)
-
-#     # update data
-#     y = 2 * np.sin(2 * np.pi * f * t)
-#     line.set_data(t, y)
-
-#     # required to update canvas and attached toolbar!
-#     canvas.draw()
-
-
-#slider_update = tkinter.Scale(root, from_=1, to=5, orient=tkinter.HORIZONTAL,
-#                              command=update_frequency, label="Frequency [Hz]")
-
-# Packing order is important. Widgets are processed sequentially and if there
-# is no space left, because the window is too small, they are not displayed.
-# The canvas is rather flexible in its size, so we pack it last which makes
-# sure the UI controls are displayed as long as possible.
 button_quit.pack(side=tk.BOTTOM)
-#slider_update.pack(side=tkinter.BOTTOM)
 toolbar.pack(side=tk.BOTTOM, fill=tk.X)
 canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
