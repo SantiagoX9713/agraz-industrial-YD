@@ -1,10 +1,11 @@
-from tkinter import ttk
-import tkinter as tk
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
-from matplotlib.backend_bases import key_press_handler
+try:
+    from ctypes import windll
+    windll.shcore.SetProcessDpiAwareness(1)
+except:
+    pass
 from YDdata.get_csv import get_csv_ftp, df_from_csv
-from YDdata.my_tk import my_tk, create_plot
-from functools import partial
+from YDdata.my_tk import my_tk, create_plot, data_selector
+
 # def filter_by_time(df,h):
 #     now = datetime.now()
 #     print(now)
@@ -15,23 +16,11 @@ from functools import partial
 getter = get_csv_ftp()
 getter.conect()
 prepared_data = df_from_csv()
+
 root = my_tk()
-# canvas = FigureCanvasTkAgg(root.fig, master=root)  # A tk.DrawingArea.
-# canvas.draw()
-# toolbar = NavigationToolbar2Tk(canvas, root, pack_toolbar=False)
-# toolbar.update()
-# toolbar.pack(side=tk.BOTTOM, fill=tk.X)
-# canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-# button_quit = tk.Button(master=root, text="Quit", command=root.destroy)
-# button_quit1 = tk.Button(master=root, text="Refresh", command=partial(root.reset_data, prepared_data))
-# button_quit.pack(side=tk.BOTTOM)
-# button_quit1.pack(side=tk.RIGHT)
-rec = create_plot(root, prepared_data)
-rec.pack(side=tk.TOP)
-rec.grid(column=0, row=0)
-button_quit = ttk.Button(root, text="Quit", command=root.destroy)
-button_quit1 = ttk.Button(root, text="Refresh", command=partial(root.reset_data, prepared_data))
-button_quit.grid(column=0, row=1)
-button_quit1.grid(column=0, row=2)
+channel_selector = data_selector(root)
+channel_selector.place(x=0, y=0)
+rec = create_plot(root, prepared_data.__getattribute__('canal1'))
+rec.place(x=0, y=50)
 
 root.mainloop()
