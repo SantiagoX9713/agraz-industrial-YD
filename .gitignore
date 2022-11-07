@@ -5,3 +5,5 @@
 /upx-3.96-win64
 app.spec
 main.spec
+*.pyc
+YDdata/__pycache__/__init__.cpython-310.pyc
