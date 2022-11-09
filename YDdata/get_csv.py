@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 
 
-class get_csv_ftp:
+class GetCsvFtp:
 
     def conect(self):
         HOST = "localhost"
@@ -19,7 +19,7 @@ class get_csv_ftp:
 
 
 
-class df_from_csv:
+class DfFromCsv:
     
     def __init__(self):
     
