@@ -1,4 +1,4 @@
-from YDdata.get_csv import GetCsvFtp
+#from YDdata.get_csv import GetCsvFtp
 from YDdata.my_tk import MyTk
 
 # def filter_by_time(df,h):
@@ -8,8 +8,8 @@ from YDdata.my_tk import MyTk
 #     return df
 
 # df = filter_by_time(canal1, 10)
-getter = GetCsvFtp()
-getter.conect()
+#getter = GetCsvFtp()
+#getter.conect()
 
 root = MyTk()
 root.mainloop()
