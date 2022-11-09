@@ -12,8 +12,4 @@ getter = GetCsvFtp()
 getter.conect()
 
 root = MyTk()
-# channel_selector = data_selector(root)
-# channel_selector.place(x=0, y=0)
-# root.create_plot(root)
-# rec.place(x=0, y=50)
 root.mainloop()

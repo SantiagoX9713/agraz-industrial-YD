@@ -11,7 +11,6 @@ def degree_range(n):
     return np.c_[start, end], mid_points
 
 
-
 def rot_text(ang): 
     rotation = np.degrees(np.radians(ang) * np.pi / np.pi - np.radians(90))
     return rotation
@@ -78,9 +77,7 @@ def gauge(labels=['LOW','MEDIUM','HIGH','VERY HIGH','EXTREME'], \
                  width=0.04, head_width=0.09, head_length=0.1, fc='k', ec='k')
     
     ax.add_patch(Circle((0, 0), radius=0.02, facecolor='k'))
-    ax.add_patch(Circle((0, 0), radius=0.01, facecolor='w', zorder=11))
-
-    
+    ax.add_patch(Circle((0, 0), radius=0.01, facecolor='w', zorder=11))  
     ax.set_frame_on(False)
     ax.axes.set_xticks([])
     ax.axes.set_yticks([])
