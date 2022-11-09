@@ -5,8 +5,8 @@ except:
     pass
 
 
-from YDdata.get_csv import GetCsvFtp, DfFromCsv
-from YDdata.my_tk import MyTk, create_plot, data_selector
+from YDdata.get_csv import GetCsvFtp
+from YDdata.my_tk import MyTk
 
 # def filter_by_time(df,h):
 #     now = datetime.now()
@@ -17,10 +17,10 @@ from YDdata.my_tk import MyTk, create_plot, data_selector
 # df = filter_by_time(canal1, 10)
 getter = GetCsvFtp()
 getter.conect()
-prepared_data = DfFromCsv()
+
 root = MyTk()
 # channel_selector = data_selector(root)
 # channel_selector.place(x=0, y=0)
-create_plot(root, prepared_data.__getattribute__('canal1'))
+# root.create_plot(root)
 # rec.place(x=0, y=50)
 root.mainloop()
