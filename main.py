@@ -1,10 +1,3 @@
-try:
-    from ctypes import windll
-    windll.shcore.SetProcessDpiAwareness(1)
-except:
-    pass
-
-
 from YDdata.get_csv import GetCsvFtp
 from YDdata.my_tk import MyTk
 
