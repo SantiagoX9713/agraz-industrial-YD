@@ -13,8 +13,8 @@ except:
 #     return df
 
 # df = filter_by_time(canal1, 10)
-getter = GetCsvFtp()
-getter.conect()
+# getter = GetCsvFtp()
+# getter.conect()
 
 root = MyTk()
 root.mainloop()

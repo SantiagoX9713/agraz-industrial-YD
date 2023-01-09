@@ -5,7 +5,6 @@ from tkinter import ttk, messagebox
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from .get_csv import DfFromCsv
 from .gauge_test import gauge
-import plotly.graph_objects as go
 
 
 
