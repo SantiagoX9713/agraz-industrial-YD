@@ -1,11 +1,11 @@
 from functools import partial
 import matplotlib.pyplot as plt
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 from .get_csv import DfFromCsv
 from .gauge_test import gauge
-
+from PIL import ImageTk, Image
 
 
 
@@ -91,14 +91,11 @@ class MyTk(tk.Tk):
         frame = ttk.Frame(container)
         frame.columnconfigure(0, weight=1)
         frame.winfo_name = 'GAUGE'
-        fig, ax = gauge(labels, colors, 3, title)
-        fig.patch.set_facecolor('black')
-        canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
-        canvas.draw()
-        toolbar = NavigationToolbar2Tk(canvas, frame, pack_toolbar=False)
-        toolbar.update()
-        toolbar.pack(side=tk.BOTTOM, fill=tk.X)
-        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        gauge(labels, colors, 3, title)
+        img = ImageTk.PhotoImage(Image.open("gauge.png"))
+        label = ttk.Label(frame, image=img)
+        label.pack()
+        print('PNG generated')
         frame.place(x=0, y=50)
 
 

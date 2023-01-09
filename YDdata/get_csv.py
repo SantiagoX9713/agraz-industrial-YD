@@ -19,7 +19,7 @@ class GetCsvFtp:
 
 
 
-class DfFromCsv :
+class DfFromCsv:
     
     def __init__(self):
     

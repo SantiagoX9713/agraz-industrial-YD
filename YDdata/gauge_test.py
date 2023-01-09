@@ -31,6 +31,7 @@ def gauge(labels=['LOW','MEDIUM','HIGH','VERY HIGH','EXTREME'], \
         cmap = cm.get_cmap(colors, N)
         cmap = cmap(np.arange(N))
         colors = cmap[::-1,:].tolist()
+
     if isinstance(colors, list): 
         if len(colors) == N:
             colors = colors[::-1]
@@ -82,6 +83,8 @@ def gauge(labels=['LOW','MEDIUM','HIGH','VERY HIGH','EXTREME'], \
     ax.axes.set_xticks([])
     ax.axes.set_yticks([])
     ax.axis('equal')
-    return fig, ax
-    del fix
-    del ax
+    fig.savefig('gauge.png')
+    print('gauge_test')
+    
+    del fig,ax
+    plt.close('all')
