@@ -83,3 +83,5 @@ def gauge(labels=['LOW','MEDIUM','HIGH','VERY HIGH','EXTREME'], \
     ax.axes.set_yticks([])
     ax.axis('equal')
     return fig, ax
+    del fix
+    del ax

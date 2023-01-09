@@ -1,5 +1,10 @@
 from YDdata.get_csv import GetCsvFtp
 from YDdata.my_tk import MyTk
+try:
+    from ctypes import windll
+    windll.shcore.SetProcessDpiAwareness(1)
+except:
+    pass
 
 # def filter_by_time(df,h):
 #     now = datetime.now()

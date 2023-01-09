@@ -19,24 +19,38 @@ class MyTk(tk.Tk):
         self.wm_title("YoDiagnostico")
         
         self.prepared_data = DfFromCsv()
-        barra_menus = tk.Menu()
-        barra_menus.winfo_name = 'MENU'
-        menu_archivo = tk.Menu(barra_menus, tearoff=False)
-        barra_menus.add_cascade(menu=menu_archivo, label="Principal")
-#        menu_archivo.add_command(label="Salir", command=self.destroy)
-        menu_archivo.add_command(label="Canal 1", command=self.channel_1)
-        menu_archivo.add_command(label="Canal 2", command=self.channel_2)
-        menu_archivo.add_command(label="Canal 3", command=self.channel_3)
-        menu_archivo.add_command(label="Canal 4", command=self.channel_4)
-        menu_archivo.add_command(label="Gauge", command=self.gauge)
-        menu_archivo.add_command(label="Salir", command=self.destroy_all)
-        self.config(menu=barra_menus)
+        menu_bar = tk.Menu()
+        menu_bar.winfo_name = 'MENU'
+        
+        menu_chart = tk.Menu(menu_bar, tearoff=False)
+        menu_chart.add_command(label="Canal 1", command=self.channel_1)
+        menu_chart.add_command(label="Canal 2", command=self.channel_2)
+        menu_chart.add_command(label="Canal 3", command=self.channel_3)
+        menu_chart.add_command(label="Canal 4", command=self.channel_4)
+        menu_chart.add_command(label="Gauge", command=self.gauge)
+        menu_chart.add_command(label="Salir", command=self.destroy_all)
+        
+        menu_bar.add_cascade(menu=menu_chart, label="Principal")
+        
+
+        menu_config = tk.Menu(menu_bar, tearoff=False)
+        menu_config.add_command(label="Configuración", command=self.show_config)
+        
+        menu_bar.add_cascade(menu=menu_config, label="Config")
+        
+        self.config(menu=menu_bar)
         
     def destroy_all(self):
         for widget in self.winfo_children():
             widget.destroy()
         self.destroy()
-    
+
+    def destroy_widgets(self):
+        for widget in self.winfo_children():
+            if widget.winfo_name != 'MENU':
+                widget.destroy()
+
+
     def create_plot(self, container, prepared_data):
         # for widget in container.winfo_children():
         #     widget.destroy()
@@ -63,6 +77,7 @@ class MyTk(tk.Tk):
         ax.spines['top'].set_color('white')
         ax.spines['right'].set_color('white')
         ax.spines['left'].set_color('white')
+        fig.autofmt_xdate()
         canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
         canvas.draw()
         toolbar = NavigationToolbar2Tk(canvas, frame, pack_toolbar=False)
@@ -72,10 +87,13 @@ class MyTk(tk.Tk):
         frame.place(x=0, y=50)
 
     def create_gauge(self, container, title):
+        labels=['Estable','Variación','Inestable','Falla']
+        colors=['#3C33FF','#FFF033','#F6810B','#FF0000']
         frame = ttk.Frame(container)
         frame.columnconfigure(0, weight=1)
         frame.winfo_name = 'GAUGE'
-        fig, ax = gauge(labels=['Estable','Variación','Inestable','Falla'], colors=['#3C33FF','#FFF033','#F6810B','#FF0000'], arrow=3, title=title)
+        fig, ax = gauge(labels, colors, 3, title)
+        fig.patch.set_facecolor('black')
         canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
         canvas.draw()
         toolbar = NavigationToolbar2Tk(canvas, frame, pack_toolbar=False)
@@ -86,42 +104,33 @@ class MyTk(tk.Tk):
 
 
     def gauge(self):
-        for widget in self.winfo_children():
-            if widget.winfo_name != 'MENU':
-                widget.destroy()
+        self.destroy_widgets()
         self.wm_title("YoDiagnostico | Gauge")
         self.create_gauge(self, 'Estado de la maquina')
-        for widget in self.winfo_children():
-            print(widget.winfo_name)
 
 
     def channel_1(self):
-        for widget in self.winfo_children():
-            if widget.winfo_name != 'MENU':
-                widget.destroy()
+        self.destroy_widgets()
         self.wm_title("YoDiagnostico | Canal 1")
         self.create_plot(self, self.prepared_data.__getattribute__('canal1'))
 
     
     def channel_4(self):
-        for widget in self.winfo_children():
-            if widget.winfo_name != 'MENU':
-                widget.destroy()
+        self.destroy_widgets()
         self.wm_title("YoDiagnostico | Canal 2")
         self.create_plot(self, self.prepared_data.__getattribute__('canal2'))
     
     
     def channel_2(self):
-        for widget in self.winfo_children():
-            if widget.winfo_name != 'MENU':
-                widget.destroy()
+        self.destroy_widgets()
         self.wm_title("YoDiagnostico | Canal 3")
         self.create_plot(self, self.prepared_data.__getattribute__('canal3'))
     
     
     def channel_3(self):
-        for widget in self.winfo_children():
-            if widget.winfo_name != 'MENU':
-                widget.destroy()
+        self.destroy_widgets()
         self.wm_title("YoDiagnostico | Canal 4")
         self.create_plot(self, self.prepared_data.__getattribute__('canal4'))
+
+    def show_config(self):
+        print('Config clicked')
