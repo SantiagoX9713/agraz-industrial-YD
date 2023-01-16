@@ -1,16 +1,10 @@
 {
-    "display":[
+    "display": [
         {
-            "channel1": false
-        },
-        {
-            "channel2": false
-        },
-        {
-            "channel3": false
-        },
-        {
-            "channel4": false
+            "chart1": false,
+            "chart2": true,
+            "chart3": true,
+            "chart4": false
         }
-    ] 
+    ]
 }
