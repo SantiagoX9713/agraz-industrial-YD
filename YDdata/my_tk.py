@@ -157,10 +157,14 @@ class MyTk(tk.Tk):
         newWindow.geometry("+%d+%d" % (x+200, y+200))
         newWindow.wm_transient(self)
         #  Variables for JSON
-        chart1 = IntVar()
-        chart2 = IntVar()
-        chart3 = IntVar()
-        chart4 = IntVar()
+        
+        config_f = open('YDdata/config.json', 'r')
+        config_j = json.load(config_f)
+        config_f.close()
+        chart1 = IntVar(value=int(config_j["display"][0]["chart1"]))
+        chart2 = IntVar(value=int(config_j["display"][0]["chart2"]))
+        chart3 = IntVar(value=int(config_j["display"][0]["chart3"]))
+        chart4 = IntVar(value=int(config_j["display"][0]["chart4"]))
         # Checkboxes
         check1 = Checkbutton(
             newWindow,
