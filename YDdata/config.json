@@ -1,10 +1,10 @@
 {
     "display": [
         {
-            "chart1": false,
+            "chart1": true,
             "chart2": true,
-            "chart3": true,
-            "chart4": false
+            "chart3": false,
+            "chart4": true
         }
     ]
 }

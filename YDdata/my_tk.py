@@ -1,4 +1,4 @@
-import matplotlib.pyplot as plt
+from  matplotlib import pyplot as plt, dates
 import tkinter as tk
 from tkinter import ttk, Toplevel, Button, Checkbutton, IntVar
 from matplotlib.backends.backend_tkagg import (
@@ -55,33 +55,43 @@ class MyTk(tk.Tk):
         frame = ttk.Frame(container)
         frame.columnconfigure(0, weight=1)
         frame.winfo_name = 'PLOTER'
-        fig = plt.Figure(figsize=(7, 5), dpi=120)
-        fig.patch.set_facecolor('black')
+        
+        fig = plt.Figure(figsize=(12, 6), dpi=100)
+        t = prepared_data['Time'][0:10].astype(str)
         ax = fig.add_subplot()
-        df2 = prepared_data[['Time', 'Solt Mec']]
-        # colors = ["red" if i > 2.72 else "yellow" for i in df2['Solt Mec']]
-        df2.plot.line(legend=True, ax=ax, fontsize=16, grid=True)
-        # ax.axhline(y=2.81, color='r', linestyle='-')
-        # ax.axhline(y=2.70, color='b', linestyle='-')
-        # ax.set_title('Solturas Mecánicas')
-        # ax.set_ylim([2.6,2.85])
-        ax.set_facecolor('black')
-        [t.set_color('white') for t in ax.xaxis.get_ticklines()]
-        [t.set_color('white') for t in ax.xaxis.get_ticklabels()]
-        [t.set_color('white') for t in ax.yaxis.get_ticklines()]
-        [t.set_color('white') for t in ax.yaxis.get_ticklabels()]
-        ax.spines['bottom'].set_color('white')
-        ax.spines['top'].set_color('white')
-        ax.spines['right'].set_color('white')
-        ax.spines['left'].set_color('white')
-        fig.autofmt_xdate()
+        line, = ax.plot(t, prepared_data['Solt Mec'][0:10])
+        ax.set_xlabel("time [s]")
+        ax.set_ylabel("f(t)")
+        ax.set_xticks(ax.get_xticks(), rotation = 45)        
+        # fig = plt.Figure(figsize=(10, 5), dpi=100)
+        # fig.patch.set_facecolor('black')
+        # ax = fig.add_subplot()
+        # df = prepared_data[['Time', 'Solt Mec']][0:20].set_index(prepared_data['Time'][0:20])
+        # #df.set_index(prepared_data['Date_Time'][0:10])
+        # # colors = ["red" if i > 2.72 else "yellow" for i in df['Solt Mec']]
+        # df.plot.line(legend=True, ax=ax, fontsize=8, grid=True)
+        # # ax.axhline(y=2.81, color='r', linestyle='-')
+        # # ax.axhline(y=2.70, color='b', linestyle='-')
+        # # ax.set_title('Solturas Mecánicas')
+        # # ax.set_ylim([2.6,2.85])
+        # ax.set_facecolor('black')
+        # [t.set_color('white') for t in ax.xaxis.get_ticklines()]
+        # [t.set_color('white') for t in ax.xaxis.get_ticklabels()]
+        # [t.set_color('white') for t in ax.yaxis.get_ticklines()]
+        # [t.set_color('white') for t in ax.yaxis.get_ticklabels()]
+        # ax.spines['bottom'].set_color('white')
+        # ax.spines['top'].set_color('white')
+        # ax.spines['right'].set_color('white')
+        # ax.spines['left'].set_color('white')
+        # #ax.xaxis.set_major_formatter(dates.DateFormatter('%H:%M:%S'))
+        # #fig.autofmt_xdate()
         canvas = FigureCanvasTkAgg(fig, master=frame)  # A tk.DrawingArea.
         canvas.draw()
         toolbar = NavigationToolbar2Tk(canvas, frame, pack_toolbar=False)
         toolbar.update()
         toolbar.pack(side=tk.BOTTOM, fill=tk.X)
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        frame.place(x=0, y=50)
+        frame.place(x=0, y=0)
 
     def create_gauge(self, container, title):
         labels = ['Estable', 'Variación', 'Inestable', 'Falla']

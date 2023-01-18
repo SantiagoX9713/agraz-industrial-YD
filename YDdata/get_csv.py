@@ -29,6 +29,7 @@ class DfFromCsv:
         self.canal2 = origin[['Date_Time', 'Ch 2 Global','Ch 2 Desbalance','Ch 2 Desalineamiento', 'Ch 2 Solt Mec', 'Ch 2 Acc', 'Ch 2 Hd Env']].copy()
         self.canal3 = origin[['Date_Time', 'Ch 3 Global','Ch 3 Desbalance','Ch 3 Desalineamiento', 'Ch 3 Solt Mec', 'Ch 3 Acc', 'Ch 3 Hd Env']].copy()
         self.canal4 = origin[['Date_Time', 'Ch 4 Global','Ch 4 Desbalance','Ch 4 Desalineamiento', 'Ch 4 Solt Mec', 'Ch 4 Acc', 'Ch 4 Hd Env']].copy()
+        self.canal1.set_index(pd.to_datetime(self.canal1['Date_Time']))
         self.canal1['Date'] = pd.to_datetime(self.canal1['Date_Time']).dt.date
         self.canal1['Time'] = pd.to_datetime(self.canal1['Date_Time']).dt.time
         self.canal1.columns = columnas
