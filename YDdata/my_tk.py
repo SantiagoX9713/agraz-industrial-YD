@@ -1,6 +1,6 @@
 from  matplotlib import pyplot as plt, dates
 import tkinter as tk
-from tkinter import ttk, Toplevel, Button, Checkbutton, IntVar
+from tkinter import ttk, Toplevel, Button, Checkbutton, IntVar, StringVar
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 from .get_csv import DfFromCsv
@@ -140,10 +140,10 @@ class MyTk(tk.Tk):
         
         def save_config():
             # Abrir y guardar archivos
-            config_file = open('YDdata/config.json', 'r')
-            config_json = json.load(config_file)
-            config_file.close()
-            display = [
+            config_file2 = open('YDdata/config.json', 'r')
+            config_json2 = json.load(config_file2)
+            config_file2.close()
+            display_charts = [
                 {
                     "chart1": bool(chart1.get()),
                     "chart2": bool(chart2.get()),
@@ -151,7 +151,13 @@ class MyTk(tk.Tk):
                     "chart4": bool(chart4.get())
                 }
             ]
-            config_json['display'] = display
+            users = [
+                {
+                    "user": user,
+                    "password": password
+                }
+            ]
+            config_json2['display_charts'] = display_charts
             config_file = open('YDdata/config.json', 'w')
             json.dump(config_json, config_file, indent=4)
             config_file.close()
@@ -168,13 +174,15 @@ class MyTk(tk.Tk):
         newWindow.wm_transient(self)
         #  Variables for JSON
         
-        config_f = open('YDdata/config.json', 'r')
-        config_j = json.load(config_f)
-        config_f.close()
-        chart1 = IntVar(value=int(config_j["display"][0]["chart1"]))
-        chart2 = IntVar(value=int(config_j["display"][0]["chart2"]))
-        chart3 = IntVar(value=int(config_j["display"][0]["chart3"]))
-        chart4 = IntVar(value=int(config_j["display"][0]["chart4"]))
+        config_file1 = open('YDdata/config.json', 'r')
+        config_json1 = json.load(config_file1)
+        config_file1.close()
+        user = StringVar(value=config_json1)
+        password = StringVar()
+        chart1 = IntVar(value=int(config_json1["display_charts"][0]["chart1"]))
+        chart2 = IntVar(value=int(config_json1["display_charts"][0]["chart2"]))
+        chart3 = IntVar(value=int(config_json1["display_charts"][0]["chart3"]))
+        chart4 = IntVar(value=int(config_json1["display_charts"][0]["chart4"]))
         # Checkboxes
         check1 = Checkbutton(
             newWindow,

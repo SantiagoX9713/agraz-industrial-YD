@@ -1,10 +1,20 @@
 {
-    "display": [
+    "display_charts": [
         {
             "chart1": true,
             "chart2": true,
-            "chart3": false,
+            "chart3": true,
             "chart4": true
+        }
+    ],
+    "users": [
+        {
+            "user": "admin",
+            "password": "adminadmin"
+        },
+        {
+            "user": "user1",
+            "password": "user1"
         }
     ]
 }
