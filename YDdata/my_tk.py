@@ -48,7 +48,7 @@ class MyTk(tk.Tk):
             if widget.winfo_name != 'MENU':
                 widget.destroy()
 
-    def create_plot(self, container, prepared_data):
+    def create_plot(self, container, prepared_data, coords):
         # for widget in container.winfo_children():
         #     widget.destroy()
 
@@ -91,7 +91,7 @@ class MyTk(tk.Tk):
         toolbar.update()
         toolbar.pack(side=tk.BOTTOM, fill=tk.X)
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        frame.place(x=0, y=0)
+        frame.place(coords)
 
     def create_gauge(self, container, title):
         labels = ['Estable', 'Variación', 'Inestable', 'Falla']
