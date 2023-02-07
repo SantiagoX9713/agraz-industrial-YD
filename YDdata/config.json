@@ -3,8 +3,8 @@
         {
             "chart1": true,
             "chart2": true,
-            "chart3": true,
-            "chart4": true
+            "chart3": false,
+            "chart4": false
         }
     ],
     "users": [
@@ -16,5 +16,21 @@
             "user": "user1",
             "password": "user1"
         }
-    ]
+    ],
+    "channels": [
+        "1",
+        "2",
+        "3",
+        "4"
+    ],
+    "variables": [
+        "Global",
+        "Desbalance",
+        "Desalineamiento",
+        "Solt Mec",
+        "Acc",
+        "Hd Env"
+    ],
+    "channel": "",
+    "variable": ""
 }

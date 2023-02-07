@@ -1,6 +1,6 @@
 from  matplotlib import pyplot as plt, dates
 import tkinter as tk
-from tkinter import ttk, Toplevel, Button, Checkbutton, IntVar, StringVar
+from tkinter import ttk, Toplevel, Button, Checkbutton, IntVar, StringVar, OptionMenu
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 from .get_csv import DfFromCsv
@@ -12,8 +12,13 @@ import json
 class MyTk(tk.Tk):
     def __init__(self):
         super().__init__()
+        config_file = open('YDdata/config.json', 'r')
+        self.chart_config = json.load(config_file)
+        config_file.close()
+        
+        
         self.configure(bg='black')
-        # self.state("zoomed")
+        # self.state("zoomed")900
         self.wm_title("YoDiagnostico")
         self.geometry("1500x750")
         self.prepared_data = DfFromCsv()
@@ -21,10 +26,7 @@ class MyTk(tk.Tk):
         menu_bar.winfo_name = 'MENU'
 
         menu_chart = tk.Menu(menu_bar, tearoff=False)
-        menu_chart.add_command(label="Canal 1", command=self.channel_1)
-        menu_chart.add_command(label="Canal 2", command=self.channel_2)
-        menu_chart.add_command(label="Canal 3", command=self.channel_3)
-        menu_chart.add_command(label="Canal 4", command=self.channel_4)
+        menu_chart.add_command(label="Plot charts", command=self.plot_charts)
         menu_chart.add_command(label="Gauge", command=self.gauge)
         menu_chart.add_command(label="Salir", command=self.destroy_all)
 
@@ -56,7 +58,7 @@ class MyTk(tk.Tk):
         frame.columnconfigure(0, weight=1)
         frame.winfo_name = 'PLOTER'
         
-        fig = plt.Figure(figsize=(12, 6), dpi=100)
+        fig = plt.Figure(figsize=(9, 5), dpi=100)
         t = prepared_data['Time'][0:10].astype(str)
         ax = fig.add_subplot()
         line, = ax.plot(t, prepared_data['Solt Mec'][0:10])
@@ -91,7 +93,7 @@ class MyTk(tk.Tk):
         toolbar.update()
         toolbar.pack(side=tk.BOTTOM, fill=tk.X)
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        frame.place(coords)
+        frame.place(x=coords[0], y=coords[1])
 
     def create_gauge(self, container, title):
         labels = ['Estable', 'Variación', 'Inestable', 'Falla']
@@ -111,25 +113,36 @@ class MyTk(tk.Tk):
         self.wm_title("YoDiagnostico | Gauge")
         self.create_gauge(self, 'Estado de la maquina')
 
-    def channel_1(self):
+    def plot_charts(self):
         self.destroy_widgets()
-        self.wm_title("YoDiagnostico | Canal 1")
-        self.create_plot(self, self.prepared_data.__getattribute__('canal1'))
-
-    def channel_4(self):
-        self.destroy_widgets()
-        self.wm_title("YoDiagnostico | Canal 2")
-        self.create_plot(self, self.prepared_data.__getattribute__('canal2'))
-
-    def channel_2(self):
-        self.destroy_widgets()
-        self.wm_title("YoDiagnostico | Canal 3")
-        self.create_plot(self, self.prepared_data.__getattribute__('canal3'))
-
-    def channel_3(self):
-        self.destroy_widgets()
-        self.wm_title("YoDiagnostico | Canal 4")
-        self.create_plot(self, self.prepared_data.__getattribute__('canal4'))
+        self.wm_title("YoDiagnostico | Charts")
+        coords = []
+        charts = []
+        for k,v in self.chart_config["display_charts"][0].items():
+            if v == True:
+                charts.append(k)
+        print(charts)
+        if len(charts) == 1:
+            coords.append([0, 0])
+        if len(charts) == 2:
+            coords.append([0, 0])
+            coords.append([900, 0])
+        if len(charts) == 3:
+            coords.append([0, 0])
+            coords.append([900, 0])
+            coords.append([0, 900])
+        if len(charts) == 4:
+            coords.append([0, 0])
+            coords.append([900, 0])
+            coords.append([0, 900])
+            coords.append([900, 900])
+        print(coords)
+        for r in range(0, len(charts)):
+            self.create_plot(
+                self,
+                self.prepared_data.__getattribute__(f'canal{r+1}'),
+                coords=coords[r]
+            )
 
     def show_config(self):
         # Aquí va la nueva función para renderear los charts
@@ -158,9 +171,9 @@ class MyTk(tk.Tk):
                 }
             ]
             config_json2['display_charts'] = display_charts
-            config_file = open('YDdata/config.json', 'w')
-            json.dump(config_json, config_file, indent=4)
-            config_file.close()
+            config_file2 = open('YDdata/config.json', 'w')
+            json.dump(config_json2, config_file2, indent=4)
+            config_file2.close()
             restart_tk_widgets()
 
 
@@ -177,8 +190,10 @@ class MyTk(tk.Tk):
         config_file1 = open('YDdata/config.json', 'r')
         config_json1 = json.load(config_file1)
         config_file1.close()
-        user = StringVar(value=config_json1)
+        user = StringVar(value=config_json1["users"][0]["user"])
         password = StringVar()
+        channel = StringVar()
+        variable = StringVar()
         chart1 = IntVar(value=int(config_json1["display_charts"][0]["chart1"]))
         chart2 = IntVar(value=int(config_json1["display_charts"][0]["chart2"]))
         chart3 = IntVar(value=int(config_json1["display_charts"][0]["chart3"]))
@@ -220,6 +235,17 @@ class MyTk(tk.Tk):
                 'variable': chart4
             }
         ).place(x=400, y=150)
+        # User & password
+        v_option = OptionMenu(newWindow,
+            variable,
+            *config_json1["variables"]
+        ).place(x=200, y=50)
+        c_option = OptionMenu(newWindow,
+            channel,
+            *config_json1["channels"]
+        ).place(x=300, y=50)
+        # Data
+
         # Button for save the config
         btn = Button(newWindow,
                      text="Guardar Configuración",
