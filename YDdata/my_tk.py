@@ -12,11 +12,6 @@ import json
 class MyTk(tk.Tk):
     def __init__(self):
         super().__init__()
-        config_file = open('YDdata/config.json', 'r')
-        self.chart_config = json.load(config_file)
-        config_file.close()
-        
-        
         self.configure(bg='black')
         # self.state("zoomed")900
         self.wm_title("YoDiagnostico")
@@ -118,7 +113,10 @@ class MyTk(tk.Tk):
         self.wm_title("YoDiagnostico | Charts")
         coords = []
         charts = []
-        for k,v in self.chart_config["display_charts"][0].items():
+        config_file = open('YDdata/config.json', 'r')
+        chart_config = json.load(config_file)
+        config_file.close()
+        for k,v in chart_config["display_charts"][0].items():
             if v == True:
                 charts.append(k)
         print(charts)
@@ -130,12 +128,12 @@ class MyTk(tk.Tk):
         if len(charts) == 3:
             coords.append([0, 0])
             coords.append([900, 0])
-            coords.append([0, 900])
+            coords.append([0, 500])
         if len(charts) == 4:
             coords.append([0, 0])
             coords.append([900, 0])
-            coords.append([0, 900])
-            coords.append([900, 900])
+            coords.append([0, 550])
+            coords.append([900, 550])
         print(coords)
         for r in range(0, len(charts)):
             self.create_plot(
@@ -148,7 +146,7 @@ class MyTk(tk.Tk):
         # Aquí va la nueva función para renderear los charts
         # self.destroy_widgets()
         def restart_tk_widgets():
-            pass
+            self.plot_charts()
 
         
         def save_config():
@@ -190,10 +188,15 @@ class MyTk(tk.Tk):
         config_file1 = open('YDdata/config.json', 'r')
         config_json1 = json.load(config_file1)
         config_file1.close()
+        
         user = StringVar(value=config_json1["users"][0]["user"])
-        password = StringVar()
-        channel = StringVar()
-        variable = StringVar()
+        password = StringVar(value=config_json1["users"][0]["user"])
+        
+        channel = StringVar(value=config_json1["channel"])
+        channel.set("Select a Channel")
+        variable = StringVar(value=config_json1["variable"])
+        variable.set("Select a Variable")
+        
         chart1 = IntVar(value=int(config_json1["display_charts"][0]["chart1"]))
         chart2 = IntVar(value=int(config_json1["display_charts"][0]["chart2"]))
         chart3 = IntVar(value=int(config_json1["display_charts"][0]["chart3"]))
@@ -239,11 +242,11 @@ class MyTk(tk.Tk):
         v_option = OptionMenu(newWindow,
             variable,
             *config_json1["variables"]
-        ).place(x=200, y=50)
+        ).place(x=150, y=10)
         c_option = OptionMenu(newWindow,
             channel,
             *config_json1["channels"]
-        ).place(x=300, y=50)
+        ).place(x=320, y=10)
         # Data
 
         # Button for save the config
