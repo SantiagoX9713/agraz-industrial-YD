@@ -4,17 +4,13 @@
             "chart1": true,
             "chart2": false,
             "chart3": true,
-            "chart4": true
+            "chart4": false
         }
     ],
     "users": [
         {
             "user": "admin",
-            "password": "adminadmin"
-        },
-        {
-            "user": "user1",
-            "password": "user1"
+            "password": "admin"
         }
     ],
     "ftp_config": [
@@ -37,6 +33,6 @@
         "Acc",
         "Hd Env"
     ],
-    "channel": "",
-    "variable": ""
+    "channel": "4",
+    "variable": "Acc"
 }

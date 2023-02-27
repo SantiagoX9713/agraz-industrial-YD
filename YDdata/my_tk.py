@@ -1,6 +1,6 @@
-from  matplotlib import pyplot as plt, dates
+from  matplotlib import pyplot as plt
 import tkinter as tk
-from tkinter import ttk, Toplevel, Button, Checkbutton, IntVar, StringVar, OptionMenu
+from tkinter import ttk, Toplevel, Button, Checkbutton, IntVar, StringVar, OptionMenu, Label
 from matplotlib.backends.backend_tkagg import (
     FigureCanvasTkAgg, NavigationToolbar2Tk)
 from .get_csv import DfFromCsv
@@ -45,7 +45,7 @@ class MyTk(tk.Tk):
             if widget.winfo_name != 'MENU':
                 widget.destroy()
 
-    def create_plot(self, container, prepared_data, coords):
+    def create_plot(self, container, prepared_data, coords, title):
         # for widget in container.winfo_children():
         #     widget.destroy()
 
@@ -56,9 +56,9 @@ class MyTk(tk.Tk):
         fig = plt.Figure(figsize=(9, 5), dpi=100)
         t = prepared_data['Time'][0:10].astype(str)
         ax = fig.add_subplot()
-        line, = ax.plot(t, prepared_data['Solt Mec'][0:10])
-        ax.set_xlabel("time [s]")
-        ax.set_ylabel("f(t)")
+        line, = ax.plot(t, prepared_data[title][0:10])
+        ax.set_xlabel("Hora")
+        ax.set_ylabel(title)
         ax.set_xticks(ax.get_xticks(), rotation = 45)        
         # fig = plt.Figure(figsize=(10, 5), dpi=100)
         # fig.patch.set_facecolor('black')
@@ -139,7 +139,8 @@ class MyTk(tk.Tk):
             self.create_plot(
                 self,
                 self.prepared_data.__getattribute__(f'canal{r+1}'),
-                coords=coords[r]
+                coords=coords[r],
+                title=chart_config["variable"]
             )
 
     def show_config(self):
@@ -164,11 +165,16 @@ class MyTk(tk.Tk):
             ]
             users = [
                 {
-                    "user": user,
-                    "password": password
+                    "user": user.get(),
+                    "password": password.get()
                 }
             ]
             config_json2['display_charts'] = display_charts
+            config_json2['users'] = users
+            config_json2['channel'] = channel.get()
+            config_json2['variable'] = variable.get()
+            print(dir(channel))
+            print(dir(variable))
             config_file2 = open('YDdata/config.json', 'w')
             json.dump(config_json2, config_file2, indent=4)
             config_file2.close()
@@ -193,9 +199,7 @@ class MyTk(tk.Tk):
         password = StringVar(value=config_json1["users"][0]["user"])
         
         channel = StringVar(value=config_json1["channel"])
-        channel.set("Select a Channel")
         variable = StringVar(value=config_json1["variable"])
-        variable.set("Select a Variable")
         
         chart1 = IntVar(value=int(config_json1["display_charts"][0]["chart1"]))
         chart2 = IntVar(value=int(config_json1["display_charts"][0]["chart2"]))
@@ -210,7 +214,7 @@ class MyTk(tk.Tk):
                 'onvalue': True,
                 'variable': chart1
             }
-        ).place(x=150, y=50)
+        ).place(x=115, y=65)
         check2 = Checkbutton(
             newWindow,
             cnf={
@@ -219,7 +223,7 @@ class MyTk(tk.Tk):
                 'onvalue': True,
                 'variable': chart2
             }
-        ).place(x=400, y=50)
+        ).place(x=365, y=65)
         check3 = Checkbutton(
             newWindow,
             cnf={
@@ -228,7 +232,7 @@ class MyTk(tk.Tk):
                 'onvalue': True,
                 'variable': chart3
             }
-        ).place(x=150, y=150)
+        ).place(x=115, y=165)
         check4 = Checkbutton(
             newWindow,
             cnf={
@@ -237,16 +241,18 @@ class MyTk(tk.Tk):
                 'onvalue': True,
                 'variable': chart4
             }
-        ).place(x=400, y=150)
+        ).place(x=365, y=165)
         # User & password
         v_option = OptionMenu(newWindow,
             variable,
             *config_json1["variables"]
-        ).place(x=150, y=10)
-        c_option = OptionMenu(newWindow,
-            channel,
-            *config_json1["channels"]
-        ).place(x=320, y=10)
+        ).place(x=120, y=25)
+        label_variable = Label(master=newWindow, text='Select channel').place(x=120, y=5)
+        # c_option = OptionMenu(newWindow,
+        #     channel,
+        #     *config_json1["channels"]
+        # ).place(x=370, y=25)
+        # label_channel = Label(master=newWindow, text='Select variable').place(x=370, y=5)
         # Data
 
         # Button for save the config
